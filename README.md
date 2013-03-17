@@ -96,5 +96,5 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 Contact Me
 -------------------------
-I am open to any type of suggestions, bug reports, or requests for the code. You can also contact me for any questions. You can either email me at coskuacay@gmail.com or visit my [website] (http://www.coskuacay.com) for more information.
+I am open to any type of suggestions, bug reports, or requests for the code. You can also contact me for any questions. Either email me at coskuacay@gmail.com or visit my [website] (http://www.coskuacay.com) for more information.
 
