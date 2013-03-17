@@ -31,7 +31,7 @@ Put `MemoryPool.h` and `MemoryPool.tcc` into your project folder and include `Me
 template <typename T, size_t BlockSize = 4096>
 ```
 
-Here, `T` is the type of the objects you want to allocate and `BlockSize` is the size of the chunks in bytes the allocator will ask from the system. `T` can be any object, while `BlockSize` needs to be at least twice the size of `T`. After that, you create an instance of `MemoryPool` class and use it just like a standard allocator object. Here is an example:
+Here, `T` is the type of the objects you want to allocate and `BlockSize` is the size of the chunks in bytes the allocator will ask from the system (see Picking BlockSize for more information). `T` can be any object, while `BlockSize` needs to be at least twice the size of `T`. After that, you create an instance of `MemoryPool` class and use it just like a standard allocator object. Here is an example:
 ```C++
 #include <iostream>
 #include "MemoryPool.h"
