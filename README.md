@@ -33,7 +33,7 @@ MemoryPool is mostly compliant with the C++ Standard Library allocators. This me
 
 Usage
 -------------------------
-Put `MemoryPool.h` and `MemoryPool.tcc` into your project folder and include `MemoryPool.h` into your project. These files define a single template class in the common namespace:
+Put `MemoryPool.h` and `MemoryPool.tcc` into your project folder and include `MemoryPool.h` into your project. Do not forget to enable C++11 features (for example, with the `-std=c++11` flag if you use GCC) These files define a single template class in the common namespace:
 ```C++
 template <typename T, size_t BlockSize = 4096>
 ```
