@@ -26,12 +26,54 @@ MemoryPool is mostly compliant with the C++ Standard Library allocators. This me
 
 Usage
 -------------------------
-Put `MemoryPool.h` and `MemoryPool.tpp` into your project folder and include `MemoryPool.h` into your project. These files define a single template class in the common namespace:
-   Template <typename T, size_t BlockSize = 4096>
-Here, `T` is the type of the objects you want to allocate and `BlockSize` is the size of the chunks in bytes the allocator will ask from the system. `T` can be any object, while `BlockSize` needs to be at least twice the size of `T`. After that, you create an instance of `MemoryPool` class and use it just like a standard allocator object. Here is an example:
-   
+Put `MemoryPool.h` and `MemoryPool.tcc` into your project folder and include `MemoryPool.h` into your project. These files define a single template class in the common namespace:
+```C++
+template <typename T, size_t BlockSize = 4096>
+```
 
-How to Pick BlockSize
+Here, `T` is the type of the objects you want to allocate and `BlockSize` is the size of the chunks in bytes the allocator will ask from the system. `T` can be any object, while `BlockSize` needs to be at least twice the size of `T`. After that, you create an instance of `MemoryPool` class and use it just like a standard allocator object. Here is an example:
+```C++
+#include <iostream>
+#include "MemoryPool.h"
+
+int main()
+{
+  MemoryPool<size_t> pool;
+  size_t* x = pool.allocate();
+  
+  *x = 0xDEADBEEF;
+  std::cout << std::hex << *x << std::endl;
+  
+  pool.deallocate(x);
+  return 0;
+}
+```
+
+Normally, if `T` is a class that has a non-default constructor, you need to call `MemoryPool.construct(pointer)` on the returned pointer before use and `MemoryPool.destroy(pointer)` after. Apart from the standard allocator functions, MemoryPool defines two new functions: `newElement(Args...)` and `deleteElement(pointer)`. These functions behave just like the standard `new` and `delete` functions and eliminate the need to call constructors and destructors separately. The only difference is that they can only allocate space for a type `T` object. We can rewrite the code above using these functions (we did not use them since `size_t` does not need to be constructed):
+```C++
+#include <iostream>
+#include "MemoryPool.h"
+
+int main()
+{
+  MemoryPool<size_t> pool;
+  size_t* x = pool.newElement();
+  
+  *x = 0xDEADBEEF;
+  std::cout << std::hex << *x << std::endl;
+  
+  pool.deleteElement(x);
+  return 0;
+}
+```
+
+The `Args` in `newElement` is whatever you would pass to the constructor of `T` (magic of C++11 perfect forwarding).
+
+For more information, see the reference to [allocator_traits] (http://www.cplusplus.com/reference/memory/allocator_traits/) or the [standard allocator] (http://www.cplusplus.com/reference/memory/allocator/).
+
+More examples are provided with the code.
+
+Picking BlockSize
 -------------------------
 `BlockSize` is the size of the chunks in bytes the allocator will ask from the system. Picking the correct `BlockSize` (the second, optional, template parameter) is essential for good performance. I suggest you pick a power of two, which may decrease memory fragmentation depending on your system. Also, make sure that `BlockSize` is at least several hundred times larger than the size of `T` for maximum performance. The idea is, the greater the `BlockSize`, the less calls to `malloc` the library will make. However, picking a size too big might increase memory usage unnecessarily and actually decrease the performance because `malloc` may need to make many system calls. For objects that contain several pointers, the default size of 4096 bytes should be good. If you need bigger object, you may need to time your code with larger sizes for `BlockSize`.
 
