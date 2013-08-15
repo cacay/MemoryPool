@@ -44,34 +44,33 @@ class StackAlloc
 {
   public:
     typedef StackNode_<T> Node;
-    typedef typename std::allocator_traits<Alloc>::template rebind_alloc<Node>
-      allocator;
+    typedef typename Alloc::template rebind<Node>::other allocator;
 
     /** Default constructor */
-    StackAlloc() {head_ = nullptr; }
+    StackAlloc() {head_ = 0; }
     /** Default destructor */
     ~StackAlloc() { clear(); }
 
     /** Returns true if the stack is empty */
-    bool empty() {return (head_ == nullptr);}
+    bool empty() {return (head_ == 0);}
 
     /** Deallocate all elements and empty the stack */
     void clear() {
       Node* curr = head_;
-      while (curr != nullptr)
+      while (curr != 0)
       {
         Node* tmp = curr->prev;
         allocator_.destroy(curr);
         allocator_.deallocate(curr, 1);
         curr = tmp;
       }
-      head_ = nullptr;
+      head_ = 0;
     }
 
     /** Put an element on the top of the stack */
     void push(T element) {
       Node* newNode = allocator_.allocate(1);
-      allocator_.construct(newNode);
+      allocator_.construct(newNode, Node());
       newNode->data = element;
       newNode->prev = head_;
       head_ = newNode;
