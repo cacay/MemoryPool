@@ -3,7 +3,7 @@ Memory Pool
 
 This is a template class implementation of a memory pool allocator that is very simple to use and extremely fast with minimal overhead for each allocation/deallocation. The provided class is mostly compliant with the C++ Standard Library with a few exceptions (see [C++ Compliance](#c-compliance) for details).
 
-This library uses variadic templates for perfect argument forwarding and some other optimizations, and thus requires C++11 features. I may be willing to implement a C++98 version if somebody really needs it ([send me an email](mailto:coskuacay@gmail.com) if you are interested). 
+This library uses variadic templates for perfect argument forwarding and some other optimizations, and thus requires C++11 features. There also is a C++98 version, but the C++11 version has better memory management. 
 
 What is a Memory Pool
 -------------------------
